@@ -1,4 +1,10 @@
-C Windows application that depends on sgpokemap.com to obtain raid details at a specific hour, based on user specification.
+C Windows application that depends on sgpokemap.com to obtain raid details at a specific interval, based on user specification.
+Featuring:
+- Modifiable gym list
+  - Add by name or proximity
+- Configurable time interval
+- Selectable display and notify raid tiers
+- Light memory footprint
 =====
 Developed in VS2022 with libcurl for Windows
 libcurl installed using vcpkg: https://github.com/microsoft/vcpkg
