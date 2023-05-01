@@ -28,7 +28,7 @@
 #define RESET_USER_PREFS_COMMAND "reset"
 #define UPDATE_GAME_MASTER_TITLE "Refresh Assets"
 #define UPDATE_GAME_MASTER_COMMAND "updatemaster"
-#define UPDATE_GYM_INFO_TITLE "[!] Refresh Cached Gym List"
+#define UPDATE_GYM_INFO_TITLE "Refresh Cached Gym List (!)"
 #define UPDATE_GYM_INFO_COMMAND "updatelist"
 #define EXIT_PROGRAM_TITLE "Close Program"
 #define EXIT_PROGRAM_COMMAND "stop"

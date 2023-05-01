@@ -12,24 +12,47 @@ u_int open_user_prefs_menu(user_preferences_struct* user_preferences, gym_node**
 			CLEAR_TERMINAL;
 
 			print_divider(get_screen_dims('x'), "full");
-			print_in_center(get_screen_dims('x'), MAIN_NAME);
+			print_in_center(get_screen_dims('x'), 1, MAIN_NAME);
 			print_divider(get_screen_dims('x'), "full");
-			fprintf(stdout, "[~] %s [%s]", SET_HOME_TITLE, SET_HOME_COMMAND);
-			SET_CYAN; fprintf(stdout, " {%f, %f}\n", user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]); SET_NORMAL;
-			fprintf(stdout, "[~] %s [%s]\n", CHOOSE_GYM_TITLE, CHOOSE_GYM_COMMAND);
-			fprintf(stdout, "[~] %s [%s]", SET_REFRESH_TITLE, SET_REFRESH_COMMAND);
-			SET_CYAN; fprintf(stdout, " {%d minute(s)}\n", user_preferences->refresh_interval); SET_NORMAL;
-			fprintf(stdout, "[~] %s [%s]", CHOOSE_DISPLAY_TIER_TITLE, CHOOSE_DISPLAY_TIER_COMMAND);
-			SET_CYAN; fprintf(stdout, " {%s}\n", user_preferences->display_tiers); SET_NORMAL;
-			fprintf(stdout, "[~] %s [%s]", CHOOSE_ALERT_TIER_TITLE, CHOOSE_ALERT_TIER_COMMAND);
-			SET_CYAN; fprintf(stdout, " {%s}\n", user_preferences->alert_tiers); SET_NORMAL;
-			fprintf(stdout, "[~] %s [%s]", CHOOSE_DISPLAY_MODE_TITLE, CHOOSE_DISPLAY_MODE_COMMAND);
-			SET_CYAN; fprintf(stdout, " {%s}\n", user_preferences->display_mode == DISPLAY_MODE_MINIMAL ? "Minimal" : "Verbose"); SET_NORMAL;
-			fprintf(stdout, "[~] %s [%s]\n", RESET_USER_PREFS_TITLE, RESET_USER_PREFS_COMMAND);
-			fprintf(stdout, "[~] %s [%s]\n", UPDATE_GAME_MASTER_TITLE, UPDATE_GAME_MASTER_COMMAND);
-			fprintf(stdout, "[~] %s [%s]\n", UPDATE_GYM_INFO_TITLE, UPDATE_GYM_INFO_COMMAND);
-			fprintf(stdout, "[~] %s [%s]\n", EXIT_PROGRAM_TITLE, EXIT_PROGRAM_COMMAND);
-			fprintf(stdout, "[~] %s [%s]\n", EXIT_RETURN_TITLE, EXIT_RETURN_COMMAND);
+
+			custom_print('i', "%s", SET_HOME_TITLE, SET_HOME_COMMAND);
+			SET_IN_FOR; custom_print('0', " [%s]", SET_HOME_COMMAND);
+			SET_CYAN; custom_print('0', " {%f, %f}\n", user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
+
+			custom_print('i', "%s", CHOOSE_GYM_TITLE, CHOOSE_GYM_COMMAND);
+			SET_IN_FOR; custom_print('0', " [%s]\n", CHOOSE_GYM_COMMAND);
+
+			custom_print('i', "%s", SET_REFRESH_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]", SET_REFRESH_COMMAND);
+			SET_CYAN; custom_print('0', " {%d minute(s)}\n", user_preferences->refresh_interval);
+
+			custom_print('i', "%s", CHOOSE_DISPLAY_TIER_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]", CHOOSE_DISPLAY_TIER_COMMAND);
+			SET_CYAN; custom_print('0', " {%s}\n", user_preferences->display_tiers);
+
+			custom_print('i', "%s", CHOOSE_ALERT_TIER_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]", CHOOSE_ALERT_TIER_COMMAND);
+			SET_CYAN; custom_print('0', " {%s}\n", user_preferences->alert_tiers);
+
+			custom_print('i', "%s", CHOOSE_DISPLAY_MODE_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]", CHOOSE_DISPLAY_MODE_COMMAND);
+			SET_CYAN; custom_print('0', " {%s}\n", user_preferences->display_mode == DISPLAY_MODE_MINIMAL ? "Minimal" : "Verbose");
+
+			custom_print('i', "%s", RESET_USER_PREFS_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]\n", RESET_USER_PREFS_COMMAND);
+
+			custom_print('i', "%s", UPDATE_GAME_MASTER_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]\n", UPDATE_GAME_MASTER_COMMAND);
+
+			custom_print('i', "%s", UPDATE_GYM_INFO_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]\n", UPDATE_GYM_INFO_COMMAND);
+
+			custom_print('i', "%s", EXIT_PROGRAM_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]\n", EXIT_PROGRAM_COMMAND);
+
+			custom_print('i', "%s", EXIT_RETURN_TITLE);
+			SET_IN_FOR; custom_print('0', " [%s]\n", EXIT_RETURN_COMMAND);
+
 			print_divider(get_screen_dims('x'), "full");
 
 			must_print_header = 0;
@@ -111,7 +134,7 @@ u_int open_user_prefs_menu(user_preferences_struct* user_preferences, gym_node**
 			break;
 		}
 		else {
-			fprintf(stdout, "[!] No valid inputs found.\n");
+			custom_print('!', "No valid inputs found.\n");
 		}
 	}
 
@@ -170,13 +193,13 @@ u_int process_sethome(user_preferences_struct* user_preferences, int force_compl
 	CLEAR_TERMINAL;
 
 	print_divider(get_screen_dims('x'), "full");
-	print_in_center(get_screen_dims('x'), SET_HOME_TITLE);
+	print_in_center(get_screen_dims('x'), 1, SET_HOME_TITLE);
 	print_divider(get_screen_dims('x'), "full");
-	fprintf(stdout, "[i] Used when adding gyms to distinguish gyms with the same name.\n");
-	fprintf(stdout, "[i] Google Maps is a good place to find this value.\n");
-	fprintf(stdout, "[>] Format: Decimal Degrees (%clat, %clng)\n", 241, 241);	// chars are +-
+	custom_print('i', "Used when adding gyms to distinguish gyms with the same name.\n");
+	custom_print('i', "Google Maps is a good place to find this value.\n");
+	custom_print(':', "[Input Format] Decimal Degrees (%clat, %clng)\n", 241, 241);	// chars are +-
 	if (!force_completion) {
-		fprintf(stdout, "[i] %s\n", BACK_TITLE);
+		custom_print(':', "%s\n", BACK_TITLE);
 	}
 	print_divider(get_screen_dims('x'), "full");
 
@@ -195,12 +218,12 @@ u_int process_sethome(user_preferences_struct* user_preferences, int force_compl
 		// Extract the first token (lat)
 		char* token = strtok(input_buffer, ",");
 		if (token == NULL) {
-			fprintf(stdout, "[!] Incorrect format. (Number of parameters)\n");
+			custom_print('!', "Incorrect format. (Number of parameters)\n");
 			continue;
 		}
 		result = strtod(token, &temp_ptr);
 		if (errno != 0 || *temp_ptr != '\0') {	// Checks if value is in ERANGE and string did not have letters
-			fprintf(stdout, "[!] Incorrect format. (Parameter format)\n");
+			custom_print('!', "Incorrect format. (Parameter format)\n");
 			continue;
 		}
 		user_preferences->home_coordinates[0] = result;
@@ -208,12 +231,12 @@ u_int process_sethome(user_preferences_struct* user_preferences, int force_compl
 		// Extract the second token (lng)
 		token = strtok(NULL, ",");
 		if (token == NULL) {
-			fprintf(stdout, "[!] Incorrect format. (Number of parameters)\n");
+			custom_print('!', "Incorrect format. (Number of parameters)\n");
 			continue;
 		}
 		result = strtod(token, &temp_ptr);
 		if (errno != 0 || *temp_ptr != '\0') {	// Checks if value is in ERANGE and string did not have letters
-			fprintf(stdout, "[!] Incorrect format. (Parameter format)\n");
+			custom_print('!', "Incorrect format. (Parameter format)\n");
 			continue;
 		}
 
@@ -222,7 +245,7 @@ u_int process_sethome(user_preferences_struct* user_preferences, int force_compl
 		// Ensure no more tokens
 		token = strtok(NULL, ",");
 		if (token != NULL) {
-			fprintf(stdout, "[!] Incorrect format. (Number of parameters)\n");
+			custom_print('!', "Incorrect format. (Number of parameters)\n");
 			continue;
 		}
 
@@ -233,7 +256,7 @@ u_int process_sethome(user_preferences_struct* user_preferences, int force_compl
 		break;
 	}
 
-	fprintf(stdout, "[i] Saved: %f, %f\n", user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
+	custom_print('>', "Saved: %f, %f\n", user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
 	press_any();
 
 	return 1;
@@ -244,12 +267,12 @@ u_int process_interval(user_preferences_struct* user_preferences, int force_comp
 	CLEAR_TERMINAL;
 
 	print_divider(get_screen_dims('x'), "full");
-	print_in_center(get_screen_dims('x'), SET_REFRESH_TITLE);
+	print_in_center(get_screen_dims('x'), 1, SET_REFRESH_TITLE);
 	print_divider(get_screen_dims('x'), "full");
-	fprintf(stdout, "[i] Specify auto-refresh interval.\n");
-	fprintf(stdout, "[>] Format: Digit Minutes\n");
+	custom_print('i', "Specify auto-refresh interval.\n");
+	custom_print(':', "[Input Format] Digit Minutes\n");
 	if (!force_completion) {
-		fprintf(stdout, "[i] %s\n", BACK_TITLE);
+		custom_print(':', "%s\n", BACK_TITLE);
 	}
 	print_divider(get_screen_dims('x'), "full");
 
@@ -262,7 +285,7 @@ u_int process_interval(user_preferences_struct* user_preferences, int force_comp
 		}
 
 		if (!verify_string_is_uint(input_buffer)) {
-			fprintf(stdout, "[!] Incorrect format. (Parameter format)\n");
+			custom_print('!', "Incorrect format. (Parameter format)\n");
 			continue;
 		}
 
@@ -275,7 +298,7 @@ u_int process_interval(user_preferences_struct* user_preferences, int force_comp
 		break;
 	}
 
-	fprintf(stdout, "[i] Saved: %d minute(s)\n", user_preferences->refresh_interval);
+	custom_print('>', "Saved: %d minute(s)\n", user_preferences->refresh_interval);
 	press_any();
 
 	return 1;
@@ -286,18 +309,19 @@ u_int process_tierdisplay(user_preferences_struct* user_preferences, int force_c
 	CLEAR_TERMINAL;
 
 	print_divider(get_screen_dims('x'), "full");
-	print_in_center(get_screen_dims('x'), CHOOSE_DISPLAY_TIER_TITLE);
+	print_in_center(get_screen_dims('x'), 1, CHOOSE_DISPLAY_TIER_TITLE);
 	print_divider(get_screen_dims('x'), "full");
-	fprintf(stdout, "[i] Select tiers to display.\n");
-	fprintf(stdout, "[>] Format: Comma separated string (no., no., ...)\n");
-	fprintf(stdout, "[>] Accepted Inputs: \n");
+	custom_print('i', "Select tiers to display.\n");
+	custom_print('i', "Following completion, alert tiers will be reset.\n");
+	custom_print(':', "[Input Format]: Comma separated string (no., no., ...)\n");
+	custom_print(':', "Accepted Inputs: \n");
 	for (int i = 0; i < LEVEL_ARRAY_SIZE; i++) {
 		if (level_array[i][0] != '-') {
-			fprintf(stdout, "[>] %d (%s)\n", i, level_array[i]);
+			custom_print(':', "%d (%s)\n", i, level_array[i]);
 		}
 	}
 	if (!force_completion) {
-		fprintf(stdout, "[i] %s\n", BACK_TITLE);
+		custom_print(':', "%s\n", BACK_TITLE);
 	}
 	print_divider(get_screen_dims('x'), "full");
 
@@ -335,17 +359,17 @@ u_int process_tierdisplay(user_preferences_struct* user_preferences, int force_c
 		}
 
 		if (strlen(final_buffer) == 0) {
-			fprintf(stdout, "[!] No valid inputs found. (Parameter format)\n");
+			custom_print('!', "No valid inputs found. (Parameter format)\n");
 			continue;
 		}
 
-		fprintf(stdout, "[i] Detected Inputs:<");
+		custom_print('>', "Detected Inputs: <");
 		for (int i = 0; i < LEVEL_ARRAY_SIZE; i++) {
 			if (tier_store_array[i] == 1) {
-				fprintf(stdout, "%s,", level_array[i]);
+				custom_print('0', "%s,", level_array[i]);
 			}
 		}
-		fprintf(stdout, "\b>\n");
+		custom_print('0', "\b>\n");
 
 
 		if (!confirmation_yes_no(1)) {
@@ -356,10 +380,13 @@ u_int process_tierdisplay(user_preferences_struct* user_preferences, int force_c
 		final_buffer[strlen(final_buffer) - 1] = '\0';
 		strcpy(user_preferences->display_tiers, final_buffer);
 
+		// Reset alert tiers
+		strcpy(user_preferences->alert_tiers, "");
+
 		break;
 	}
 
-	fprintf(stdout, "[i] Saved: Tiers %s\n", user_preferences->display_tiers);
+	custom_print('>', "Saved: Tiers %s\n", user_preferences->display_tiers);
 	press_any();
 
 	return 1;
@@ -372,22 +399,22 @@ u_int process_tieralert(user_preferences_struct* user_preferences, int force_com
 	CLEAR_TERMINAL;
 
 	print_divider(get_screen_dims('x'), "full");
-	print_in_center(get_screen_dims('x'), CHOOSE_ALERT_TIER_TITLE);
+	print_in_center(get_screen_dims('x'), 1, CHOOSE_ALERT_TIER_TITLE);
 	print_divider(get_screen_dims('x'), "full");
-	fprintf(stdout, "[i] Select tiers to ping.\n");
-	fprintf(stdout, "[>] Format: Comma separated string (no., no., ...)\n");
-	fprintf(stdout, "[>] Accepted Inputs: \n");
+	custom_print('i', "Select tiers to ping.\n");
+	custom_print(':', "[Input Format] Comma separated string (no., no., ...)\n");
+	custom_print(':', "Accepted Inputs: \n");
 	for (int i = 0; i < LEVEL_ARRAY_SIZE; i++) {
 		char temp_buffer[8];
 		snprintf(temp_buffer, 8, "\"%d\"", i);
 
 		if (level_array[i][0] != '-' && strstr(user_preferences->display_tiers, temp_buffer) != NULL) {
-			fprintf(stdout, "[>] %d (%s)\n", i, level_array[i]);
+			custom_print(':', "%d (%s)\n", i, level_array[i]);
 			allowed_tier_array[i] = 1;
 		}
 	}
 	if (!force_completion) {
-		fprintf(stdout, "[i] %s\n", BACK_TITLE);
+		custom_print(':', "%s\n", BACK_TITLE);
 	}
 	print_divider(get_screen_dims('x'), "full");
 
@@ -425,16 +452,16 @@ u_int process_tieralert(user_preferences_struct* user_preferences, int force_com
 		}
 
 		if (strlen(final_buffer) == 0) {
-			fprintf(stdout, "[i] No valid inputs found. Are you sure you do not want any alerts?\n");
+			custom_print('>', "No valid inputs found. Are you sure you do not want any alerts?\n");
 		}
 		else {
-			fprintf(stdout, "[i] Detected Inputs:<");
+			custom_print('>', "Detected Inputs: <");
 			for (int i = 0; i < LEVEL_ARRAY_SIZE; i++) {
 				if (tier_store_array[i] == 1) {
-					fprintf(stdout, "%s,", level_array[i]);
+					custom_print('0', "%s,", level_array[i]);
 				}
 			}
-			fprintf(stdout, "\b>\n");
+			custom_print('0', "\b>\n");
 		}
 
 		if (!confirmation_yes_no(1)) {
@@ -453,7 +480,7 @@ u_int process_tieralert(user_preferences_struct* user_preferences, int force_com
 		break;
 	}
 
-	fprintf(stdout, "[i] Saved: Tiers %s\n", user_preferences->alert_tiers);
+	custom_print('>', "Saved: Tiers %s\n", user_preferences->alert_tiers);
 	press_any();
 
 	return 1;
@@ -464,12 +491,12 @@ u_int process_displaymode(user_preferences_struct* user_preferences, int force_c
 	CLEAR_TERMINAL;
 
 	print_divider(get_screen_dims('x'), "full");
-	print_in_center(get_screen_dims('x'), CHOOSE_DISPLAY_MODE_TITLE);
+	print_in_center(get_screen_dims('x'), 1, CHOOSE_DISPLAY_MODE_TITLE);
 	print_divider(get_screen_dims('x'), "full");
-	fprintf(stdout, "[i] Select gym information granularity: Minimal/Verbose Mode.\n");
-	fprintf(stdout, "[>] Format: Word (min OR max)\n");
+	custom_print('i', "Select gym information granularity: Minimal/Verbose Mode.\n");
+	custom_print(':', "[Input Format] Word (min OR max)\n");
 	if (!force_completion) {
-		fprintf(stdout, "[i] %s\n", BACK_TITLE);
+		custom_print(':', "%s\n", BACK_TITLE);
 	}
 	print_divider(get_screen_dims('x'), "full");
 
@@ -482,7 +509,7 @@ u_int process_displaymode(user_preferences_struct* user_preferences, int force_c
 		}
 
 		if (strcmp(input_buffer, "min") && strcmp(input_buffer, "max")) {
-			fprintf(stdout, "[!] Incorrect format. (Parameter format)\n");
+			custom_print('!', "Incorrect format. (Parameter format)\n");
 			continue;
 		}
 
@@ -500,19 +527,20 @@ u_int process_displaymode(user_preferences_struct* user_preferences, int force_c
 		break;
 	}
 
-	fprintf(stdout, "[i] Saved: Mode %s\n", user_preferences->display_mode == DISPLAY_MODE_MINIMAL ? "Minimal" : "Verbose");
+	custom_print('>', "Saved: Mode %s\n", user_preferences->display_mode == DISPLAY_MODE_MINIMAL ? "Minimal" : "Verbose");
 	press_any();
 
 	return 1;
 }
 
+// Handles reset command
 void process_reset(user_preferences_struct* user_preferences) {
 	CLEAR_TERMINAL;
 
 	print_divider(get_screen_dims('x'), "full");
-	print_in_center(get_screen_dims('x'), RESET_USER_PREFS_TITLE);
+	print_in_center(get_screen_dims('x'), 1, RESET_USER_PREFS_TITLE);
 	print_divider(get_screen_dims('x'), "full");
-	fprintf(stdout, "[i] This will reset your user preferences file and prompt a full re-entry.\n");
+	custom_print('i', "This will reset your user preferences file and prompt a full re-entry.\n");
 	print_divider(get_screen_dims('x'), "full");
 
 	if (!confirmation_yes_no(0)) {
@@ -521,16 +549,17 @@ void process_reset(user_preferences_struct* user_preferences) {
 
 	int error_code = remove_file(FILENAME_PREFS);
 	if (error_code) {
-		fprintf(stdout, "[!] Could not delete file. Error code: %d\n", error_code);
+		custom_print('!', "Could not delete file. Error code: %d\n", error_code);
 		return;
 	}
 
 	create_user_prefs_from_scratch(user_preferences);
 }
 
+// Handles gyms command
 u_int process_gyms(user_preferences_struct* user_preferences, gym_node** user_gym_linked_list_head, char* raid_json_string) {
 	// Init all_gyms linked list
-	char* gym_string = (char*)malloc(TWOFIVESIX_KILOBYTES * sizeof(char));
+	char* gym_string = (char*)malloc_safe(TWOFIVESIX_KILOBYTES * sizeof(char));
 	int read_count = 0;
 	read_file_to_buffer_generic(gym_string, FILENAME_ALLGYMS);
 	char** gym_string_array = read_gym_string(gym_string, &read_count);
@@ -555,17 +584,30 @@ u_int process_gyms(user_preferences_struct* user_preferences, gym_node** user_gy
 			CLEAR_TERMINAL;
 
 			print_divider(get_screen_dims('x'), "full");
-			print_in_center(get_screen_dims('x'), CHOOSE_GYM_TITLE);
+			print_in_center(get_screen_dims('x'), 1, CHOOSE_GYM_TITLE);
 			print_divider(get_screen_dims('x'), "full");
-			fprintf(stdout, "[i] Commands:\n");
-			fprintf(stdout, "[>] %s [%s %s*]\n", PROCESS_GYM_TITLE_0, PROCESS_GYM_ADD_ARG_0, PROCESS_GYM_ADD_ARG_2);
-			fprintf(stdout, "[>] %s [%s %s %s %s*]\n", PROCESS_GYM_TITLE_1, PROCESS_GYM_ADD_ARG_0, PROCESS_GYM_ADD_ARG_1, PROCESS_GYM_NUM_ARG, PROCESS_GYM_ADD_ARG_2);
-			fprintf(stdout, "[i] *Optional argument that read current active gyms in specified radius instead of from masterlist.\n");
-			fprintf(stdout, "[i] *Use this command if you can't find your desired gym.\n");
-			fprintf(stdout, "[>] %s [%s %s]\n", PROCESS_GYM_TITLE_2, PROCESS_GYM_DEL_ARG_0, PROCESS_GYM_NUM_ARG);
-			fprintf(stdout, "[>] %s [%s %s]\n", PROCESS_GYM_TITLE_3, PROCESS_GYM_DEL_ARG_0, PROCESS_GYM_DEL_ARG_1);
-			fprintf(stdout, "[>] %s [%s %s %s]\n", PROCESS_GYM_TITLE_4, PROCESS_GYM_SWAP_ARG_0, PROCESS_GYM_NUM_ARG, PROCESS_GYM_NUM_ARG);
-			fprintf(stdout, "[i] %s\n", BACK_TITLE);
+
+			custom_print('i', "%s", PROCESS_GYM_TITLE_0);
+			SET_IN_FOR; custom_print('0', " [%s %s*]\n", PROCESS_GYM_ADD_ARG_0, PROCESS_GYM_ADD_ARG_2);
+
+			custom_print('i', "%s", PROCESS_GYM_TITLE_1);
+			SET_IN_FOR; custom_print('0', " [%s %s %s %s*]\n", PROCESS_GYM_ADD_ARG_0, PROCESS_GYM_ADD_ARG_1, PROCESS_GYM_NUM_ARG, PROCESS_GYM_ADD_ARG_2);
+
+			custom_print('i', "*Optional argument that read current active gyms in specified radius instead of from masterlist.\n");
+
+			custom_print('i', "*Use this command if you can't find your desired gym.\n");
+
+			custom_print('i', "%s", PROCESS_GYM_TITLE_2);
+			SET_IN_FOR; custom_print('0', " [%s %s]\n", PROCESS_GYM_DEL_ARG_0, PROCESS_GYM_NUM_ARG);
+
+			custom_print('i', "%s", PROCESS_GYM_TITLE_3);
+			SET_IN_FOR; custom_print('0', " [%s %s]\n", PROCESS_GYM_DEL_ARG_0, PROCESS_GYM_DEL_ARG_1);
+
+			custom_print('i', "%s", PROCESS_GYM_TITLE_4);
+			SET_IN_FOR; custom_print('0', " [%s %s %s]\n", PROCESS_GYM_SWAP_ARG_0, PROCESS_GYM_NUM_ARG, PROCESS_GYM_NUM_ARG);
+
+			custom_print(':', "%s\n", BACK_TITLE);
+
 			print_divider(get_screen_dims('x'), "full");
 			gym_list_print_all(user_gym_linked_list_head, user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
 			print_divider(get_screen_dims('x'), "full");
@@ -621,7 +663,7 @@ u_int process_gyms(user_preferences_struct* user_preferences, gym_node** user_gy
 			}
 			// explosion.mp4
 			else {
-				fprintf(stdout, "[!] No valid inputs found.\n");
+				custom_print('!', "No valid inputs found.\n");
 				must_print_header = 0;
 			}
 		}
@@ -651,7 +693,7 @@ u_int process_gyms(user_preferences_struct* user_preferences, gym_node** user_gy
 			must_print_header = 1;
 		}
 		else {
-			fprintf(stdout, "[!] No valid inputs found.\n");
+			custom_print('!', "No valid inputs found.\n");
 		}
 	}
 
@@ -661,6 +703,8 @@ u_int process_gyms(user_preferences_struct* user_preferences, gym_node** user_gy
 	return changes_to_user_gyms;
 }
 
+// Handles add command (within gyms)
+// Deals with both end of list insertion and index insertion
 u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** user_gym_linked_list_head, gym_node** all_gym_linked_list_head, u_int insertion_index) {
 	int must_print_header = 1;
 	int return_code = 0;
@@ -671,14 +715,14 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 
 			print_divider(get_screen_dims('x'), "full");
 			if (insertion_index == 0) {
-				print_in_center(get_screen_dims('x'), PROCESS_GYM_TITLE_0);
+				print_in_center(get_screen_dims('x'), 1, PROCESS_GYM_TITLE_0);
 			}
 			else {
-				print_in_center(get_screen_dims('x'), PROCESS_GYM_TITLE_1);
+				print_in_center(get_screen_dims('x'), 1, PROCESS_GYM_TITLE_1);
 			}
 			print_divider(get_screen_dims('x'), "full");
-			fprintf(stdout, "[i] Enter name of gym. (Full name)\n");
-			fprintf(stdout, "[i] %s\n", BACK_TITLE);
+			custom_print(':', "Enter name of gym. (Full name)\n");
+			custom_print(':', "%s\n", BACK_TITLE);
 			print_divider(get_screen_dims('x'), "full");
 
 			must_print_header = 0;
@@ -693,7 +737,7 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 
 		gym_node* searched_gyms_linked_list_head = gym_list_subset_by_name(all_gym_linked_list_head, input_buffer);
 		if (searched_gyms_linked_list_head == NULL) {
-			fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[NODE_NOT_FOUND]);
+			custom_print('!', "%s\n", NODE_MSG_ARR[NODE_NOT_FOUND]);
 		}
 		else {
 			must_print_header = 1;
@@ -701,11 +745,11 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 			CLEAR_TERMINAL;
 
 			print_divider(get_screen_dims('x'), "full");
-			print_in_center(get_screen_dims('x'), PROCESS_GYM_TITLE_0_A);
+			print_in_center(get_screen_dims('x'), 1, PROCESS_GYM_TITLE_0_A);
 			print_divider(get_screen_dims('x'), "full");
-			fprintf(stdout, "[i] There may be duplicates. In that event, choose based on distance offsets provided.\n");
-			fprintf(stdout, "[i] %s\n", BACK_TITLE);
-			fprintf(stdout, "[>] Format: Index Number (Singular)\n");
+			custom_print(':', "[Input Format] Index Number (Singular)\n");
+			custom_print(':', "(There may be duplicates. In that event, choose based on distance offsets provided.)\n");
+			custom_print(':', "%s\n", BACK_TITLE);
 			print_divider(get_screen_dims('x'), "full");
 			gym_list_print_all(&searched_gyms_linked_list_head, user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
 			print_divider(get_screen_dims('x'), "full");
@@ -721,14 +765,14 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 
 				if (verify_string_is_uint(input_buffer)) {
 					chosen_index = atoi(input_buffer);
-					fprintf(stdout, "[i] Chose %d.\n", chosen_index);
+					custom_print('>', "Chose %d.\n", chosen_index);
 
 					if (insertion_index > 0) {
-						fprintf(stdout, "[i] This will place this gym after index %d.\n", insertion_index);
+						custom_print('>', "This will place this gym after index %d.\n", insertion_index);
 					}
 				}
 				else {
-					fprintf(stdout, "[!] Incorrect format. (Parameter format)\n");
+					custom_print('!', "Incorrect format. (Parameter format)\n");
 					continue;
 				}
 
@@ -742,7 +786,7 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 					if (insertion_index > 0) {
 						u_int node_code = gym_node_insert_after_index(user_gym_linked_list_head, insertion_index, gym_node_chosen_index->lat, gym_node_chosen_index->lng, gym_node_chosen_index->gym_name);
 						if (node_code > NODE_SUCCESS) {
-							fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[node_code]);
+							custom_print('!', "%s\n", NODE_MSG_ARR[node_code]);
 
 							press_any();
 							break;
@@ -751,12 +795,12 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 					else {
 						u_int node_code = gym_node_append(user_gym_linked_list_head, gym_node_chosen_index->lat, gym_node_chosen_index->lng, gym_node_chosen_index->gym_name);
 						if (node_code > NODE_SUCCESS) {
-							fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[node_code]);
+							custom_print('!', "%s\n", NODE_MSG_ARR[node_code]);
 							continue;
 						}
 					}
 
-					fprintf(stdout, "[i] Added: ");
+					custom_print('>', "Added: ");
 					gym_node_print(0, gym_node_chosen_index, user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
 
 					return_code = 1;
@@ -765,7 +809,7 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 					break;
 				}
 				else {
-					fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[NODE_INVALID_INDEX]);
+					custom_print('!', "%s\n", NODE_MSG_ARR[NODE_INVALID_INDEX]);
 					continue;
 				}
 			}
@@ -781,6 +825,8 @@ u_int process_gyms_add(user_preferences_struct* user_preferences, gym_node** use
 	return return_code;
 }
 
+// Handles add -curr command (within gyms)
+// Deals with both end of list insertion and index insertion
 u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node** user_gym_linked_list_head, gym_node** current_active_gym_linked_list_head, u_int insertion_index) {
 	int must_print_header = 1;
 	int return_code = 0;
@@ -791,14 +837,15 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 
 			print_divider(get_screen_dims('x'), "full");
 			if (insertion_index == 0) {
-				print_in_center(get_screen_dims('x'), PROCESS_GYM_TITLE_0);
+				print_in_center(get_screen_dims('x'), 1, PROCESS_GYM_TITLE_0);
 			}
 			else {
-				print_in_center(get_screen_dims('x'), PROCESS_GYM_TITLE_1);
+				print_in_center(get_screen_dims('x'), 1, PROCESS_GYM_TITLE_1);
 			}
 			print_divider(get_screen_dims('x'), "full");
-			fprintf(stdout, "[i] Enter radius of active gyms to show. (meters, integer)\n");
-			fprintf(stdout, "[i] %s\n", BACK_TITLE);
+			custom_print(':', "Enter radius of active gyms to show.\n");
+			custom_print(':', "[Input Format] Meters in Integer\n");
+			custom_print(':', "%s\n", BACK_TITLE);
 			print_divider(get_screen_dims('x'), "full");
 
 			must_print_header = 0;
@@ -812,13 +859,13 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 		}
 
 		if (!verify_string_is_uint(input_buffer)) {
-			fprintf(stdout, "[!] Incorrect format. (Parameter format)\n");
+			custom_print('!', "Incorrect format. (Parameter format)\n");
 			continue;
 		}
 
 		gym_node* in_range_gyms_linked_list_head = gym_list_subset_by_range(current_active_gym_linked_list_head, strtod(input_buffer, NULL), user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
 		if (in_range_gyms_linked_list_head == NULL) {
-			fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[NODE_NOT_FOUND]);
+			custom_print('!', "%s\n", NODE_MSG_ARR[NODE_NOT_FOUND]);
 		}
 		else {
 			must_print_header = 1;
@@ -826,11 +873,11 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 			CLEAR_TERMINAL;
 
 			print_divider(get_screen_dims('x'), "full");
-			print_in_center(get_screen_dims('x'), PROCESS_GYM_TITLE_0_A);
+			print_in_center(get_screen_dims('x'), 1, PROCESS_GYM_TITLE_0_A);
 			print_divider(get_screen_dims('x'), "full");
-			fprintf(stdout, "[i] There may be duplicates. In that event, choose based on distance offsets provided.\n");
-			fprintf(stdout, "[i] %s\n", BACK_TITLE);
-			fprintf(stdout, "[>] Format: Index Number (Singular)\n");
+			custom_print(':', "[Input Format] Index Number (Singular)\n");
+			custom_print(':', "(There may be duplicates. In that event, choose based on distance offsets provided.)\n");
+			custom_print(':', "%s\n", BACK_TITLE);
 			print_divider(get_screen_dims('x'), "full");
 			gym_list_print_all(&in_range_gyms_linked_list_head, user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
 			print_divider(get_screen_dims('x'), "full");
@@ -846,14 +893,14 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 
 				if (verify_string_is_uint(input_buffer)) {
 					chosen_index = atoi(input_buffer);
-					fprintf(stdout, "[i] Chose %d.\n", chosen_index);
+					custom_print('>', "Chose %d.\n", chosen_index);
 
 					if (insertion_index > 0) {
-						fprintf(stdout, "[i] This will place this gym after index %d.\n", insertion_index);
+						custom_print('>', "This will place this gym after index %d.\n", insertion_index);
 					}
 				}
 				else {
-					fprintf(stdout, "[!] Incorrect format. (Parameter format)\n");
+					custom_print('!', "Incorrect format. (Parameter format)\n");
 					continue;
 				}
 
@@ -867,7 +914,7 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 					if (insertion_index > 0) {
 						u_int node_code = gym_node_insert_after_index(user_gym_linked_list_head, insertion_index, gym_node_chosen_index->lat, gym_node_chosen_index->lng, gym_node_chosen_index->gym_name);
 						if (node_code > NODE_SUCCESS) {
-							fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[node_code]);
+							custom_print('!', "%s\n", NODE_MSG_ARR[node_code]);
 
 							press_any();
 							break;
@@ -876,12 +923,12 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 					else {
 						u_int node_code = gym_node_append(user_gym_linked_list_head, gym_node_chosen_index->lat, gym_node_chosen_index->lng, gym_node_chosen_index->gym_name);
 						if (node_code > NODE_SUCCESS) {
-							fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[node_code]);
+							custom_print('!', "%s\n", NODE_MSG_ARR[node_code]);
 							continue;
 						}
 					}
 
-					fprintf(stdout, "[i] Added: ");
+					custom_print('>', "Added: ");
 					gym_node_print(0, gym_node_chosen_index, user_preferences->home_coordinates[0], user_preferences->home_coordinates[1]);
 
 					return_code = 1;
@@ -890,7 +937,7 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 					break;
 				}
 				else {
-					fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[NODE_INVALID_INDEX]);
+					custom_print('!', "%s\n", NODE_MSG_ARR[NODE_INVALID_INDEX]);
 					continue;
 				}
 			}
@@ -906,14 +953,15 @@ u_int process_gyms_add_curr(user_preferences_struct* user_preferences, gym_node*
 	return return_code;
 }
 
+// Handles delete command (within gyms)
 u_int process_gyms_delete(gym_node** user_gym_linked_list_head, u_int deletion_index) {
 	// delete specific
 	if (deletion_index > 0) {
-		fprintf(stdout, "[i] This will delete the gym at index %d.\n", deletion_index);
+		custom_print('>', "This will delete the gym at index %d.\n", deletion_index);
 	}
 	// delete all
 	else {
-		fprintf(stdout, "[i] This will delete ALL gyms from your list.\n");
+		custom_print('>', "This will delete ALL gyms from your list.\n");
 	}
 
 	if (!confirmation_yes_no(0)) {
@@ -923,7 +971,7 @@ u_int process_gyms_delete(gym_node** user_gym_linked_list_head, u_int deletion_i
 	if (deletion_index > 0) {
 		u_int node_code = gym_node_delete_index(user_gym_linked_list_head, deletion_index);
 		if (node_code > NODE_SUCCESS) {
-			fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[node_code]);
+			custom_print('!', "%s\n", NODE_MSG_ARR[node_code]);
 			return 0;
 		}
 	}
@@ -934,8 +982,9 @@ u_int process_gyms_delete(gym_node** user_gym_linked_list_head, u_int deletion_i
 	return 1;
 }
 
+// Handles swap command (within gyms)
 u_int process_gyms_swap(gym_node** user_gym_linked_list_head, u_int index_1, u_int index_2) {
-	fprintf(stdout, "[i] This will swap indexes %d and %d.\n", index_1, index_2);
+	custom_print('>', "This will swap indexes %d and %d.\n", index_1, index_2);
 
 	if (!confirmation_yes_no(0)) {
 		return 0;
@@ -943,16 +992,17 @@ u_int process_gyms_swap(gym_node** user_gym_linked_list_head, u_int index_1, u_i
 
 	u_int node_code = gym_node_swap_index(user_gym_linked_list_head, index_1, index_2);
 	if (node_code > NODE_SUCCESS) {
-		fprintf(stdout, "[!] %s\n", NODE_MSG_ARR[node_code]);
+		custom_print('>', "%s\n", NODE_MSG_ARR[node_code]);
 		return 0;
 	}
 
 	return 1;
 }
 
+// Handles updatemaster command
 u_int process_update_master() {
-	fprintf(stdout, "[i] This will force a redownload of game master files on next refresh.\n");
-	fprintf(stdout, "[i] Includes: Pokemon, Moves, Forms.\n");
+	custom_print('>', "This will force a redownload of game master files on next refresh.\n");
+	custom_print('i', "Includes: Pokemon, Moves, Forms.\n");
 
 	if (!confirmation_yes_no(0)) {
 		return 0;
@@ -961,16 +1011,17 @@ u_int process_update_master() {
 	return 1;
 }
 
+// Handles updatelist command
 u_int process_update_gym_list() {
-	fprintf(stdout, "[i] This will force a redownload of the master gym list on next refresh.\n");
-	fprintf(stdout, "[!] This is a potentially destructive action if not conducted at the tail end of a raid hour!\n");
-	fprintf(stdout, "[!] Doing this may cause some gyms to no longer be present in the master file!\n");
+	custom_print('>', "This will force a redownload of the master gym list on next refresh.\n");
+	custom_print('i', "[WARNING] This is a potentially destructive action if not conducted at the tail end of a raid hour!\n");
+	custom_print('i', "[WARNING] Doing this may cause some gyms to no longer be present in the master file!\n");
 
 	if (!confirmation_yes_no(0)) {
 		return 0;
 	}
 
-	fprintf(stdout, "[!] Are you really sure?\n");
+	custom_print(':', "Are you really sure?\n");
 
 	if (!confirmation_yes_no(0)) {
 		return 0;
@@ -979,15 +1030,19 @@ u_int process_update_gym_list() {
 	return 1;
 }
 
+// Helper function:
+// Prompts the user to confirm their choice.
+// If prompt_again is set, it will also prompt the user to enter again.
+// Returns 0 if user selected 'n', 1 if user selected 'y'.
 int confirmation_yes_no(int prompt_again) {
-	fprintf(stdout, "[>] Is this okay? (Enter y/n)\n");
+	custom_print(':', "Is this okay? (Enter y/n)\n");
 
 	while (1) {
 		char input_buffer[UNIVERSAL_LENGTH] = "";
 		receive_input(input_buffer);
 
 		if (strlen(input_buffer) != 1 || !(tolower(input_buffer[0]) == 'y' || tolower(input_buffer[0]) == 'n')) {
-			fprintf(stdout, "[!] Invalid format.\n");
+			custom_print('!', "Invalid format.\n");
 			continue;
 		}
 
@@ -996,7 +1051,7 @@ int confirmation_yes_no(int prompt_again) {
 		}
 		else {
 			if (prompt_again) {
-				fprintf(stdout, "[>] Enter Again:\n");
+				custom_print(':', "Enter Again:\n");
 			}
 
 			return 0;
@@ -1004,12 +1059,18 @@ int confirmation_yes_no(int prompt_again) {
 	}
 }
 
+// Helper function:
+// Checks if a given buffer value matches the "back" command.
+// Returns 0 if no match, 1 if match.
 int confirmation_back(char* buffer) {
 	return !strcmp(buffer, BACK_COMMAND);
 }
 
+// Helper function:
+// Stores a user's input to the specified buffer.
+// Writes up to UNIVERSAL_LENGTH characters.
 void receive_input(char* input_buffer) {
-	fprintf(stdout, "[<] ");
+	custom_print('<', "");
 
 	input_buffer[0] = '\0';
 	fgets(input_buffer, UNIVERSAL_LENGTH, stdin);
@@ -1023,7 +1084,10 @@ void receive_input(char* input_buffer) {
 	}
 }
 
-// Not really uint but whatevs
+// Helper function:
+// Checks if a given buffer value contains only digits. (not even decimals or negatives)
+// Not really uint but whatevs~
+// Returns 0 if isnt uint, 1 if is.
 int verify_string_is_uint(char* string) {
 	if (strlen(string) == 0)
 		return 0;

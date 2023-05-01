@@ -2,6 +2,9 @@
 
 #include "main.h"
 
+#define DIRECTORY_RESOURCE "./resource"
+#define DIRECTORY_CONFIG "./config"
+
 #define FILENAME_POKEMON "./resource/pokemon.json"
 #define FILENAME_MOVES "./resource/moves.json"
 #define FILENAME_FORMS "./resource/forms.json"

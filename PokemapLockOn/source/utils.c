@@ -2,7 +2,46 @@
 #include "../headers/user_interface.h"
 #include "../headers/coordinates.h"
 
+//[MEMORY]
+
+// Ensures malloc success. Always call on malloced pointer.
+// Since there is no need for casting, we can directly return the void pointer.
+// If the pointer leads to NULL, catastrophic failure has occurred, the program will ~off itself~ exit.
+void* malloc_safe(size_t size)
+{
+	void* ptr = malloc(size);
+
+	if (ptr == NULL) {
+		custom_print('!', "[FATAL ERROR] malloc failed!\n");
+
+		press_any();
+		exit(1);
+	}
+
+	return ptr;
+}
+
+// Ensures realloc success. Always call on realloced pointer.
+// Since there is no need for casting, we can directly return the void pointer.
+// If the pointer leads to NULL, catastrophic failure has occurred, the program will ~off itself~ exit.
+void* realloc_safe(void* ptr, size_t size)
+{
+	ptr = realloc(ptr, size);
+
+	// if realloc(0) is called, it frees previous and assigns NULL, so must check for size == 0
+	if (ptr == NULL && size != 0) {
+		custom_print('!', "[FATAL ERROR] realloc failed!\n");
+
+		press_any();
+		exit(1);
+	}
+
+	return ptr;
+}
+
 //[BIT MANIP]
+
+// Sets a bit of a u_int to 0 or 1.
 // position: 31 - 0
 void set_bit(u_int* target, int position, int set_to) {
 	if (set_to) {
@@ -13,6 +52,7 @@ void set_bit(u_int* target, int position, int set_to) {
 	}
 }
 
+// Gets a bit of a u_int.
 // position: 31 - 0
 int get_bit(u_int* target, int position) {
 	return (*target >> position) & 1;
@@ -26,7 +66,7 @@ int get_bit(u_int* target, int position) {
 u_int gym_node_append(gym_node** head, char* lat, char* lng, char* gym_name)
 {
 	//create a new node
-	gym_node* new_node = malloc(sizeof(gym_node));
+	gym_node* new_node = malloc_safe(sizeof(gym_node));
 	*new_node = (gym_node){ .next = NULL };
 	strcpy(new_node->lat, lat);
 	strcpy(new_node->lng, lng);
@@ -82,7 +122,7 @@ u_int gym_node_insert_after_index(gym_node** head, u_int index, char* lat, char*
 	iter_node = *head;
 
 	//create a new node
-	gym_node* new_node = malloc(sizeof(gym_node));
+	gym_node* new_node = malloc_safe(sizeof(gym_node));
 	*new_node = (gym_node){ .next = NULL };
 	strcpy(new_node->lat, lat);
 	strcpy(new_node->lng, lng);
@@ -253,12 +293,12 @@ gym_node* gym_node_get_index(gym_node** head, u_int index) {
 // This function prints a SINGLE NODE's info based on a given node's address.
 void gym_node_print(u_int index, gym_node* node, double user_lat, double user_long) {
 	if (index) {
-		fprintf(stdout, " <%d>\t[%s] {%s, %s} (%.1fm, %.1f%c)\n", index, node->gym_name, node->lat, node->lng,
+		custom_print('0', " <%d>\t[%s] {%s, %s} (%.1fm, %.1f%c)\n", index, node->gym_name, node->lat, node->lng,
 			get_lat_lon_dist_meters(user_lat, user_long, strtod(node->lat, NULL), strtod(node->lng, NULL)),
 			get_lat_lon_bearing_degrees(user_lat, user_long, strtod(node->lat, NULL), strtod(node->lng, NULL)), DEG_CHAR);
 	}
 	else {
-		fprintf(stdout, "[%s] {%s, %s} (%.1fm, %.1f%c)\n", node->gym_name, node->lat, node->lng,
+		custom_print('0', "[%s] {%s, %s} (%.1fm, %.1f%c)\n", node->gym_name, node->lat, node->lng,
 			get_lat_lon_dist_meters(user_lat, user_long, strtod(node->lat, NULL), strtod(node->lng, NULL)),
 			get_lat_lon_bearing_degrees(user_lat, user_long, strtod(node->lat, NULL), strtod(node->lng, NULL)), DEG_CHAR);
 	}

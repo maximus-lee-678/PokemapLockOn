@@ -1,5 +1,6 @@
 #include "../headers/thread_operations.h"
 
+// Used in conjunction with handle_sleep_thread to create a thread that waits indefinitely until any character is selected by the user.
 DWORD WINAPI sleep_thread(void* param)
 {
 	thread_params* params = (thread_params*)param;

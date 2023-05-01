@@ -24,6 +24,7 @@ int count_new_lines(FILE* fp) {
 	return lines;
 }
 
+// Returns 0 if file_path was not found, 1 if found.
 u_int check_if_file_exists(char* source_file_path) {
 	FILE* read_file;
 
@@ -44,7 +45,7 @@ int read_file_to_buffer_generic(char* destination_buffer, char* source_file_path
 
 	read_file = fopen(source_file_path, "r");
 	if (read_file == NULL) {
-		fprintf(stderr, "[!] Could not open file %s.\n", source_file_path);
+		custom_print('!', "Could not open file %s.\n", source_file_path);
 		return -1;
 	}
 	else {
@@ -69,7 +70,7 @@ int read_file_to_buffer_generic(char* destination_buffer, char* source_file_path
 int write_file_generic(char* writable_string, char* destination_file_path) {
 	FILE* file_open = fopen(destination_file_path, "w");
 	if (file_open == NULL) {
-		fprintf(stderr, "[!] Could not create file %s.\n", destination_file_path);
+		custom_print('!', "Could not create file %s.\n", destination_file_path);
 		return -1;
 	}
 	else {
@@ -99,7 +100,7 @@ void write_to_file_user_preferences(user_preferences_struct* user_preferences) {
 // Stringifys provided gym_node linked list for writing to file,
 // and writes to file
 void write_to_file_gyms(gym_node** user_gym_linked_list_head, char* destination_file_path) {
-	char* gym_string = (char*)malloc(TWOFIVESIX_KILOBYTES * sizeof(char));
+	char* gym_string = (char*)malloc_safe(TWOFIVESIX_KILOBYTES * sizeof(char));
 	gym_string[0] = '\0';
 	char prepared_statement_buffer[UNIVERSAL_LENGTH] = "";
 	gym_node* iter_node = *user_gym_linked_list_head;

@@ -10,14 +10,18 @@
 
 int main(void)
 {
+	// Trying to make all folders needed
+	_mkdir(DIRECTORY_RESOURCE);
+	_mkdir(DIRECTORY_CONFIG);
+
 	// The declaration of independence
-	char* raid_json_string = (char*)malloc(TWO_MEGABYTES * sizeof(char));
+	char* raid_json_string = (char*)malloc_safe(TWO_MEGABYTES * sizeof(char));
 	raid_json_string[0] = '\0';
-	char* pokemon_json_string = (char*)malloc(ONETWOEIGHT_KILOBYTES * sizeof(char));
+	char* pokemon_json_string = (char*)malloc_safe(ONETWOEIGHT_KILOBYTES * sizeof(char));
 	pokemon_json_string[0] = '\0';
-	char* moves_json_string = (char*)malloc(ONETWOEIGHT_KILOBYTES * sizeof(char));
+	char* moves_json_string = (char*)malloc_safe(ONETWOEIGHT_KILOBYTES * sizeof(char));
 	moves_json_string[0] = '\0';
-	char* forms_json_string = (char*)malloc(ONETWOEIGHT_KILOBYTES * sizeof(char));
+	char* forms_json_string = (char*)malloc_safe(ONETWOEIGHT_KILOBYTES * sizeof(char));
 	forms_json_string[0] = '\0';
 	user_preferences_struct user_preferences = (user_preferences_struct){
 		.home_coordinates = {0.0, 0.0},
@@ -27,13 +31,13 @@ int main(void)
 		.display_mode = 0
 	};
 	gym_node* user_gym_linked_list_head = NULL;
-	raid_details_struct* array_raid_details = (raid_details_struct*)malloc(0);
+	raid_details_struct* array_raid_details = (raid_details_struct*)malloc_safe(0);
 
 	// Indicates which files needed to be updated
 	u_int changes = 0b00000000;
 
 	// Loading user prefs
-	char* user_prefs_string = (char*)malloc(EIGHT_KILOBYTES * sizeof(char));
+	char* user_prefs_string = (char*)malloc_safe(EIGHT_KILOBYTES * sizeof(char));
 	if (read_file_to_buffer_generic(user_prefs_string, FILENAME_PREFS) != -1) {
 		load_user_prefs(&user_preferences, user_prefs_string);
 	}
@@ -44,7 +48,7 @@ int main(void)
 	// End Loading user prefs
 
 	// Loading user gym file
-	char* gym_string = (char*)malloc(ONETWOEIGHT_KILOBYTES * sizeof(char));
+	char* gym_string = (char*)malloc_safe(ONETWOEIGHT_KILOBYTES * sizeof(char));
 	int read_count = 0;
 	if (read_file_to_buffer_generic(gym_string, FILENAME_GYMS) != -1) {
 		char** gym_string_array = read_gym_string(gym_string, &read_count);
@@ -116,7 +120,7 @@ int main(void)
 		}
 
 		u_int gym_count = gym_list_count(&user_gym_linked_list_head);
-		array_raid_details = (raid_details_struct*)realloc(array_raid_details, gym_count * sizeof(raid_details_struct));
+		array_raid_details = (raid_details_struct*)realloc_safe(array_raid_details, gym_count * sizeof(raid_details_struct));
 		init_raid_details_struct(&user_gym_linked_list_head, array_raid_details);
 
 		populate_basic_fields(gym_count, raid_json_string, array_raid_details);
@@ -128,10 +132,9 @@ int main(void)
 		print_raid_details(gym_count, array_raid_details, &user_preferences);
 
 		print_divider(get_screen_dims('x'), "full");
-		char sleep_msg[UNIVERSAL_LENGTH] = "", time_buf[UNIVERSAL_LENGTH] = "";
+		char time_buf[UNIVERSAL_LENGTH] = "";
 		stringcopy_formatted_time_string(time_buf, get_current_time());
-		snprintf(sleep_msg, UNIVERSAL_LENGTH, MSG_AUTO_REFRESH, user_preferences.refresh_interval, time_buf);
-		print_in_center(get_screen_dims('x'), sleep_msg);
+		print_in_center(get_screen_dims('x'), 1, MSG_AUTO_REFRESH, user_preferences.refresh_interval, time_buf);
 		print_divider(get_screen_dims('x'), "full");
 		int sleep_return = handle_sleep_thread(user_preferences.refresh_interval * 60 * 1000);
 

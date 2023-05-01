@@ -16,5 +16,5 @@ typedef struct {
 }webpage_callback;
 
 // base
-int get_webpage(char* webpage_link, char* output_to_string);
+void get_webpage(char* webpage_link, char* output_to_string);
 int store_webpage(char* buffer, int itemsize, int n_items, void* userp);

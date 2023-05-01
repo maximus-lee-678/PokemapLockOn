@@ -18,10 +18,10 @@ char** read_gym_string(char* gym_string, int* number_of_lines) {
 	}
 
 	// malloc based on number_of_lines
-	char** gym_string_array = (char**)malloc(*number_of_lines * sizeof(char*));
+	char** gym_string_array = (char**)malloc_safe(*number_of_lines * sizeof(char*));
 	for (int i = 0; i < *number_of_lines; i++)
 	{
-		gym_string_array[i] = (char*)malloc(UNIVERSAL_LENGTH * sizeof(char));
+		gym_string_array[i] = (char*)malloc_safe(UNIVERSAL_LENGTH * sizeof(char));
 	}
 
 	// Reset reading pointer to front

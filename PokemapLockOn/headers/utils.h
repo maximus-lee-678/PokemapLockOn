@@ -140,6 +140,9 @@ static const int weather_affin_array[WEATHER_AFFIN_ARRAY_SIZE][3] = {
 	{17, 8, 0}
 };
 
+void* malloc_safe(size_t size);
+void* realloc_safe(void* ptr, size_t size);
+
 void set_bit(u_int* target, int position, int set_to);
 int get_bit(u_int* target, int position);
 
