@@ -5,6 +5,7 @@
 
 # This project excludes
 config
+*.json
 
 # User-specific files
 *.rsuser
