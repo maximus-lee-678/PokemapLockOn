@@ -91,7 +91,7 @@ static const char gender_array[GENDER_ARRAY_SIZE][8] = {
 	"-"
 };
 
-#define LEVEL_ARRAY_SIZE 10
+#define LEVEL_ARRAY_SIZE 16
 static const char level_array[LEVEL_ARRAY_SIZE][16] = {
 	"-",
 	"Tier 1",
@@ -102,7 +102,13 @@ static const char level_array[LEVEL_ARRAY_SIZE][16] = {
 	"Mega",
 	"-",
 	"-",
-	"Elite"
+	"Elite",
+	"-",
+	"Tier 1 (Shadow)",
+	"-",
+	"Tier 3 (Shadow)",
+	"-",
+	"Tier 5 (Shadow)"
 };
 
 #define TYPES_ARRAY_SIZE 19
