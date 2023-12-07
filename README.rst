@@ -20,6 +20,10 @@
 4. Choose which raid tiers to display and notify
 5. Light memory footprint
 
+image:: https://github.com/maximus-lee-678/PokemapLockOn/blob/main/PokemapLockOn/resource/sample_options.png
+  :width: 256px
+  :alt: PokemapLockOn Options Menu
+
 🚓 Roadmap
 -----------
 
