@@ -3,7 +3,7 @@
   :alt: PokemapLockOn Logo
 
 |everpresence image| PokemapLockOn
-=================
+==================================
 
 | C Windows application that polls `sgpokemap.com <https://sgpokemap.com/gym.html>`_ to obtain raid details at set intervals.
 | Get the latest release `here <https://github.com/maximus-lee-678/PokemapLockOn/releases>`_.
